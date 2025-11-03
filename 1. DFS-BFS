@@ -1,0 +1,141 @@
+# Depth First Search (DFS) using recursion on an undirected graph
+
+# Recursive DFS function
+def dfs(graph, node, visited, traversal):
+    visited.add(node)            # Mark current node as visited
+    traversal.append(node)       # Store node in traversal order
+
+    # Explore all adjacent nodes (neighbors)
+    for neighbor in graph.get(node, []):
+        if neighbor not in visited:
+            dfs(graph, neighbor, visited, traversal)   # Recursive call
+
+def main():
+    graph = {}   # Dictionary to store adjacency list of graph
+
+    while True:
+        # User menu
+        print("\nDFS Menu:")
+        print("1. Add edge (undirected)")
+        print("2. Show graph")
+        print("3. Perform DFS Traversal")
+        print("4. Exit")
+
+        choice = input("Enter your choice: ")
+
+        # Add edge in undirected graph
+        if choice == '1':
+            u = input("Enter vertex 1: ")
+            v = input("Enter vertex 2: ")
+
+            # Initialize vertices if not already present
+            if u not in graph:
+                graph[u] = []
+            if v not in graph:
+                graph[v] = []
+
+            # Add edge both ways (undirected graph)
+            graph[u].append(v)
+            graph[v].append(u)
+            print(f"Edge added between {u} and {v}")
+
+        # Display adjacency list of graph
+        elif choice == '2':
+            print("Graph adjacency list:")
+            for node in graph:
+                print(f"{node}: {graph[node]}")
+
+        # Perform DFS traversal
+        elif choice == '3':
+            start = input("Enter starting vertex for DFS: ")
+            if start not in graph:
+                print("Vertex not found in graph.")
+            else:
+                visited = set()      # Set to track visited nodes
+                traversal = []       # List to maintain traversal order
+                dfs(graph, start, visited, traversal)
+                print("DFS Traversal Order:", traversal)
+
+        # Exit program
+        elif choice == '4':
+            print("Exiting DFS program...")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+# Execute main function
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+# Viva/Oral Questions for DFS & BFS Practical
+
+# 1. What is a graph?
+#    A graph is a data structure consisting of vertices (nodes) and edges (connections between nodes).
+#    It is used to represent relationships such as social networks, maps, or networks of computers.
+
+# 2. What is DFS?
+#    DFS (Depth First Search) is a graph traversal algorithm that explores a path fully before moving to the next path.
+#    It goes deep into one branch until no further nodes are available, then backtracks.
+
+# 3. What is BFS?
+#    BFS (Breadth First Search) is a graph traversal algorithm that visits nodes level by level.
+#    It explores all neighbors of a node before moving to the next level.
+
+# 4. Data structure used in DFS?
+#    DFS uses a stack. In recursive DFS, the call stack is used automatically by the system.
+
+# 5. Data structure used in BFS?
+#    BFS uses a queue to ensure nodes are processed in First-In-First-Out order.
+
+# 6. Why use recursion in DFS?
+#    DFS is naturally depth-oriented, and recursion simplifies the process by automatically managing the backtracking steps.
+
+# 7. Difference between DFS and BFS?
+#    DFS goes deep first and backtracks later. BFS explores level by level.
+#    DFS finds long paths, suitable for problems like maze solving. BFS is better for shortest path problems.
+
+# 8. Why maintain a visited set?
+#    To avoid revisiting nodes, prevent infinite loops, and ensure each node is processed only once.
+
+# 9. What is an undirected graph?
+#    A graph where edges do not have a direction. If A is connected to B, then B is also connected to A.
+
+# 10. What is an adjacency list?
+#     A way of storing a graph where each vertex stores a list of its adjacent vertices.
+#     It is efficient in terms of memory for sparse graphs.
+
+# 11. Why is adjacency list used here instead of adjacency matrix?
+#     Adjacency lists use less memory and are easier to manage when the graph has fewer edges.
+
+# 12. What is traversal?
+#     The process of visiting every node in a graph in some order.
+
+# 13. When is DFS preferred?
+#     Used when exploring depth completely, useful in backtracking problems, solving mazes, or checking connectivity.
+
+# 14. When is BFS preferred?
+#     Used when shortest path is required, such as in routing, networking, and level-order exploration.
+
+# 15. Why do we break loops after finishing DFS/BFS?
+#     To indicate completion of traversal and avoid unnecessary iterations once the graph is fully explored.
+
+# 16. What happens if we do not mark visited nodes?
+#     The algorithm may fall into infinite loops, especially in cyclic graphs, and nodes will be visited repeatedly.
+
+# 17. What type of graph is used in this program?
+#     An undirected graph represented using an adjacency list.
+
+# 18. Why user input for edges?
+#     To allow dynamic graph creation and to simulate real-time graph construction rather than hard-coded values.
