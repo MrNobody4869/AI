@@ -1,0 +1,258 @@
+# Best First Search and A* Algorithm Implementation
+
+import math
+import heapq
+
+# Grid representation (1 = free cell, 0 = blocked cell)
+# The agent can move in 8 directions on this grid
+grid = [
+    [1, 0, 1, 1, 1, 1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1, 0, 1, 1],
+    [1, 1, 1, 0, 1, 1, 0, 1, 0, 1],
+    [0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
+    [1, 1, 1, 0, 1, 1, 1, 0, 1, 0],
+    [1, 0, 1, 1, 1, 1, 0, 1, 0, 0],
+    [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 0, 0, 1, 0, 0, 1]
+]
+
+ROWS = len(grid)
+COLS = len(grid[0])
+
+# Source and destination coordinates
+src = (8, 0)
+dest = (0, 0)
+
+def is_valid(x, y):
+    """Check if the cell lies within grid boundaries and is walkable (1)."""
+    return 0 <= x < ROWS and 0 <= y < COLS and grid[x][y] == 1
+
+def heuristic(a, b):
+    """Heuristic function: Euclidean distance between node and goal."""
+    return math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
+
+def trace_path(parent, dest):
+    """Reconstruct path from goal back to start using parent pointers."""
+    path = []
+    node = dest
+    while node in parent:
+        path.append(node)
+        node = parent[node]
+    path.reverse()  # Correct direction: start -> goal
+    return path
+
+# ---------------- A* Search Algorithm -----------------
+def a_star(start, goal):
+    print("\n--- A* Search ---")
+    
+    # Priority queue stores (f_score, node)
+    open_list = []
+    heapq.heappush(open_list, (0, start))
+    
+    # g_score stores cost from start to current node
+    g_score = {start: 0}
+    
+    # Parent dictionary for reconstructing path
+    parent = {}
+
+    while open_list:
+        # Get node with minimum f_score
+        _, current = heapq.heappop(open_list)
+
+        # Stop when goal is reached
+        if current == goal:
+            print("Destination found!")
+            path = trace_path(parent, goal)
+            print("Path:", path)
+            print("Path length:", len(path))
+            return
+
+        # Explore all 8 possible moves
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1),
+                       (-1, -1), (-1, 1), (1, -1), (1, 1)]:
+            neighbor = (current[0] + dx, current[1] + dy)
+            
+            # Skip invalid / blocked cells
+            if not is_valid(*neighbor):
+                continue
+
+            # g(n) = cost so far + movement cost
+            tentative_g = g_score[current] + math.sqrt(dx * dx + dy * dy)
+
+            # If new path is cheaper OR neighbor not visited before
+            if neighbor not in g_score or tentative_g < g_score[neighbor]:
+                g_score[neighbor] = tentative_g
+                f_score = tentative_g + heuristic(neighbor, goal)  # f(n) = g(n) + h(n)
+                
+                heapq.heappush(open_list, (f_score, neighbor))
+                parent[neighbor] = current  # Store parent for path recovery
+
+    print("Failed to find destination.")
+
+# ---------------- Best First Search Algorithm -----------------
+def best_first_search(start, goal):
+    print("\n--- Best First Search ---")
+
+    # Priority queue based only on heuristic value h(n)
+    open_list = []
+    heapq.heappush(open_list, (heuristic(start, goal), start))
+
+    visited = set()
+    parent = {}
+
+    while open_list:
+        _, current = heapq.heappop(open_list)
+
+        # Stop when goal found
+        if current == goal:
+            print("Destination found!")
+            path = trace_path(parent, goal)
+            print("Path:", path)
+            print("Path length:", len(path))
+            return
+
+        visited.add(current)
+
+        # Explore neighbors
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1),
+                       (-1, -1), (-1, 1), (1, -1), (1, 1)]:
+            neighbor = (current[0] + dx, current[1] + dy)
+
+            # Visit only valid and unvisited cells
+            if is_valid(*neighbor) and neighbor not in visited:
+                parent[neighbor] = current
+                heapq.heappush(open_list, (heuristic(neighbor, goal), neighbor))
+
+    print("Failed to find destination.")
+
+# ---------------- Menu -----------------
+def menu():
+    while True:
+        print("\n===== Heuristic Search Techniques =====")
+        print("1. Best First Search")
+        print("2. A* Search")
+        print("3. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            best_first_search(src, dest)
+        elif choice == '2':
+            a_star(src, dest)
+        elif choice == '3':
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid choice! Try again.")
+
+# ----------- Driver Code -----------
+if __name__ == "__main__":
+    menu()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Viva Questions for Best First Search & A* Algorithm
+
+# 1. What is heuristic search?
+#    Heuristic search uses problem knowledge to guide the search toward the goal more efficiently.
+#    It uses an estimate (heuristic) to decide which node to expand next instead of blindly exploring.
+
+# 2. What is A* search algorithm?
+#    A* is an informed search algorithm that finds the shortest path to a goal.
+#    It uses both cost from start (g) and heuristic estimate to goal (h).
+#    Total evaluation function: f(n) = g(n) + h(n)
+
+# 3. What is Best First Search?
+#    Best First Search selects the next node to explore based only on the heuristic value h(n).
+#    It chooses the node that appears to be closest to the goal.
+
+# 4. Difference between A* and Best First Search?
+#    Best First Search uses only heuristic: f(n) = h(n)
+#    A* uses cost + heuristic: f(n) = g(n) + h(n)
+#    A* guarantees optimal solution if heuristic is admissible; BFS does not always guarantee shortest path.
+
+# 5. What is a heuristic function?
+#    A heuristic is a function that estimates the cost from a node to the goal.
+#    It helps guide the algorithm by providing a guess about closer positions.
+
+# 6. Which heuristic is used here?
+#    Euclidean distance: sqrt((x1 - x2)^2 + (y1 - y2)^2)
+#    Suitable when diagonal movement is allowed.
+
+# 7. What is an admissible heuristic?
+#    A heuristic that never overestimates the true cost to reach the goal.
+#    Guarantees that A* finds the optimal path.
+
+# 8. What is the role of g(n) and h(n) in A*?
+#    g(n) = cost from start to current node.
+#    h(n) = estimated cost from current node to goal.
+#    Together they balance actual path cost and estimated distance.
+
+# 9. Why do we use a priority queue (heap) in A*?
+#    The priority queue always pops the node with the lowest evaluation value (f-score).
+#    It ensures most promising node is expanded first.
+
+# 10. What is path reconstruction?
+#     After reaching the goal, the algorithm traces parent links back to the source to build the final route.
+
+# 11. Why do we check valid cell?
+#     To ensure the algorithm does not go outside the grid or enter blocked cells.
+
+# 12. Why use diagonal movement?
+#     It allows more realistic movement similar to real games and robots.
+#     Diagonal movement reduces path length in open areas.
+
+# 13. What does the visited set do?
+#     Prevents revisiting nodes and avoids loops, improving search efficiency.
+
+# 14. Why is A* optimal?
+#     A* is optimal if heuristic is admissible (does not overestimate) and consistent.
+#     It explores only necessary nodes while still ensuring shortest path.
+
+# 15. Where is A* used in real life?
+#     Games (NPC pathfinding), Google Maps, GPS routing, robotics, AI planning, network routing.
+
+# 16. In which scenario is Best First Search preferred?
+#     When fast solution is required and optimal solution is not critical.
+
+# 17. Why is grid used here?
+#     It simulates a game/map environment where each cell is a position, making the pathfinding visual and relatable.
+
+# 18. What happens if heuristic value is zero?
+#     A* becomes uniform cost search (purely cost-based).
+#     The search becomes slower but still optimal.
+
+# 19. What is the meaning of blocked cell?
+#     A value 0 in grid represents an obstacle that cannot be crossed.
+
+# 20. Why is diagonal cost sqrt(2)?
+#     Movement diagonally covers both horizontal and vertical distance, so Euclidean cost is used to represent real distance.
+
+
+
+
