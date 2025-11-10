@@ -176,6 +176,21 @@ if __name__ == "__main__":
 
 
 
+
+
+# ------------------------- Theory Notes for Viva -------------------------
+# 1. Heuristic search: Uses an estimate (heuristic) to guide search towards goal.
+# 2. A* search: f(n) = g(n) + h(n), finds optimal path if heuristic is admissible.
+# 3. Best First Search: f(n) = h(n) only, fast but may not find optimal path.
+# 4. g(n): actual cost from start to node; h(n): estimated cost to goal.
+# 5. Priority queue (heap) ensures node with lowest f(n) or h(n) is expanded first.
+# 6. Path reconstruction: Uses parent pointers to trace the path from goal to start.
+# 7. Diagonal movement: sqrt(2) cost represents Euclidean distance correctly.
+# 8. Blocked cells (0) cannot be traversed.
+# 9. A* is optimal if heuristic is admissible; Best First may not be.
+# 10. Applications: games (NPC pathfinding), robotics, GPS routing, AI planning.
+
+
 # Viva Questions for Best First Search & A* Algorithm
 
 # 1. What is heuristic search?
