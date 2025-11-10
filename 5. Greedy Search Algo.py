@@ -418,3 +418,141 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ---------------------------------------------
+# NOTES & THEORY FOR ORAL / VIVA
+# ---------------------------------------------
+
+# 1. SELECTION SORT
+# -----------------
+# - Selection Sort is a comparison-based sorting algorithm.
+# - Algorithm:
+#   1. Traverse the array.
+#   2. Find the minimum element in unsorted part.
+#   3. Swap it with the first element of unsorted part.
+#   4. Repeat until array is sorted.
+# - Time Complexity: O(n^2)
+# - Space Complexity: O(1) (in-place)
+# - Stable: No, because swapping may change order of equal elements.
+# - Used for: small arrays or educational purposes.
+
+# 2. PRIM'S MINIMUM SPANNING TREE
+# -------------------------------
+# - Finds MST (Minimum Spanning Tree) of a connected weighted graph.
+# - Starts from any vertex, adds edges with minimum weight connecting visited and unvisited vertices.
+# - Data structures used:
+#   - key[]: store minimum weight edge to a vertex.
+#   - parent[]: store parent vertex to print MST edges.
+#   - visited[]: track included vertices in MST.
+# - Time Complexity: O(V^2) for adjacency matrix (can be improved with heap)
+# - Output: MST edges and total weight.
+
+# 3. KRUSKAL'S MINIMUM SPANNING TREE
+# -----------------------------------
+# - Finds MST using edge list.
+# - Algorithm:
+#   1. Sort all edges by weight.
+#   2. Pick smallest edge and check if it forms a cycle (using Union-Find).
+#   3. Include edge if no cycle; else skip.
+#   4. Repeat until MST has (V-1) edges.
+# - Union-Find is used to efficiently check cycles.
+# - Time Complexity: O(E log E) due to sorting.
+# - Space Complexity: O(V) for parent array.
+# - Good for sparse graphs.
+
+# 4. JOB SCHEDULING (GREEDY APPROACH)
+# -----------------------------------
+# - Problem: Schedule jobs to maximize profit with deadlines.
+# - Algorithm:
+#   1. Sort jobs in decreasing order of profit.
+#   2. Place each job in latest available slot before its deadline.
+#   3. Skip if slot not available.
+# - Uses greedy strategy (chooses locally optimal for max profit)
+# - Time Complexity: O(n log n) for sorting + O(n * d) for scheduling (d = max deadline)
+# - Output: Scheduled jobs and total profit.
+
+# 5. DIJKSTRA'S SHORTEST PATH (SINGLE SOURCE)
+# --------------------------------------------
+# - Finds shortest paths from a source vertex to all other vertices in a weighted graph (non-negative weights).
+# - Algorithm:
+#   1. Initialize distances to infinity; distance[source] = 0.
+#   2. Pick unvisited vertex with smallest distance.
+#   3. Update distances of adjacent vertices if new distance is smaller.
+#   4. Mark vertex as visited and repeat.
+# - Data structures:
+#   - distances dict: stores shortest path cost.
+#   - visited set: marks processed vertices.
+# - Time Complexity: O(V^2) with simple array (can be O(E + V log V) with min-heap)
+# - Output: Shortest distance from source to all vertices.
+
+# 6. COMMON FUNCTIONS USED
+# ------------------------
+# - len(arr): Returns number of elements in array/list.
+# - input(): Read input from user.
+# - int()/float(): Type casting user input to numbers.
+# - append(): Add element to list.
+# - sort(): Sort list; in job scheduling, sorted() with key parameter.
+# - min()/max(): Find minimum or maximum value.
+# - dict(): Store graph as adjacency list (vertex: {neighbor: weight})
+# - list comprehension: For initializing board, arrays, or adjacency matrices.
+# - set(): Store visited vertices for uniqueness.
+# - heapq (in other MST / search algos): Priority queue for selecting min value.
+# - tuple: Store edge or job data as (u, v, weight) or (id, deadline, profit).
+
+# 7. TERMINOLOGY
+# ---------------
+# - MST (Minimum Spanning Tree): Connect all vertices with minimum total edge weight without cycles.
+# - Greedy Algorithm: Makes locally optimal choice hoping global optimum achieved.
+# - Backtracking / Branch & Bound: Systematically explore all solutions while pruning invalid ones.
+# - Vertex/Node: A point in graph.
+# - Edge: Connection between vertices.
+# - Weight: Cost associated with an edge.
+# - Deadline: Latest time a job can be scheduled.
+# - Profit: Reward for completing a job.
+# - Distance: Shortest path value from source vertex.
+
+# 8. HOW TO EXPLAIN OUTPUT
+# -------------------------
+# - Selection Sort: Prints sorted array after sorting.
+# - Prim's MST: Prints each edge in MST and total weight.
+# - Kruskal's MST: Prints edges in MST and total weight.
+# - Job Scheduling: Prints scheduled jobs and total profit.
+# - Dijkstra: Prints shortest distance from source to all vertices.
+# - All programs use menu-driven interface for interactive input.
+# - User enters graph/array/jobs, chooses algorithm, and sees results dynamically.
