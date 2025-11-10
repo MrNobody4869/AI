@@ -1,70 +1,124 @@
-# Depth First Search (DFS) using recursion on an undirected graph
+# Depth First Search (DFS) and Breadth First Search (BFS) on an undirected graph
+# Implemented in Python with user menu for dynamic graph creation
 
+from collections import deque  # Required for BFS queue
+
+# ------------------------- DFS Implementation -------------------------
 # Recursive DFS function
 def dfs(graph, node, visited, traversal):
-    visited.add(node)            # Mark current node as visited
-    traversal.append(node)       # Store node in traversal order
+    """
+    Perform Depth First Search recursively.
 
-    # Explore all adjacent nodes (neighbors)
+    Parameters:
+    graph     : dict  : adjacency list representation of graph
+    node      : str   : current node being visited
+    visited   : set   : set of visited nodes
+    traversal : list  : list storing the DFS traversal order
+    """
+    visited.add(node)            # Mark current node as visited
+    traversal.append(node)       # Add node to traversal path
+
+    # Explore all neighbors of current node
     for neighbor in graph.get(node, []):
         if neighbor not in visited:
-            dfs(graph, neighbor, visited, traversal)   # Recursive call
+            dfs(graph, neighbor, visited, traversal)  # Recursive call for unvisited neighbor
 
+# ------------------------- BFS Implementation -------------------------
+def bfs(graph, start):
+    """
+    Perform Breadth First Search iteratively using a queue.
+
+    Parameters:
+    graph : dict : adjacency list representation of graph
+    start : str  : starting node for BFS
+
+    Returns:
+    traversal : list : list storing BFS traversal order
+    """
+    visited = set()              # Track visited nodes
+    traversal = []               # Store BFS traversal order
+    queue = deque([start])       # Queue for BFS, starting with the start node
+    visited.add(start)
+
+    while queue:
+        node = queue.popleft()   # Dequeue node
+        traversal.append(node)   # Add to traversal
+
+        # Explore all neighbors of current node
+        for neighbor in graph.get(node, []):
+            if neighbor not in visited:
+                visited.add(neighbor)  # Mark as visited
+                queue.append(neighbor) # Enqueue for future exploration
+
+    return traversal
+
+# ------------------------- Main Program -------------------------
 def main():
-    graph = {}   # Dictionary to store adjacency list of graph
+    graph = {}  # Dictionary to store adjacency list of undirected graph
 
     while True:
-        # User menu
-        print("\nDFS Menu:")
+        # Display menu to the user
+        print("\nGraph Traversal Menu:")
         print("1. Add edge (undirected)")
         print("2. Show graph")
         print("3. Perform DFS Traversal")
-        print("4. Exit")
+        print("4. Perform BFS Traversal")
+        print("5. Exit")
 
         choice = input("Enter your choice: ")
 
-        # Add edge in undirected graph
+        # ---------------- Add edge ----------------
         if choice == '1':
             u = input("Enter vertex 1: ")
             v = input("Enter vertex 2: ")
 
-            # Initialize vertices if not already present
+            # Initialize adjacency lists if nodes not present
             if u not in graph:
                 graph[u] = []
             if v not in graph:
                 graph[v] = []
 
-            # Add edge both ways (undirected graph)
+            # Add edge both ways for undirected graph
             graph[u].append(v)
             graph[v].append(u)
             print(f"Edge added between {u} and {v}")
 
-        # Display adjacency list of graph
+        # ---------------- Show graph ----------------
         elif choice == '2':
             print("Graph adjacency list:")
             for node in graph:
                 print(f"{node}: {graph[node]}")
 
-        # Perform DFS traversal
+        # ---------------- DFS Traversal ----------------
         elif choice == '3':
             start = input("Enter starting vertex for DFS: ")
             if start not in graph:
                 print("Vertex not found in graph.")
             else:
-                visited = set()      # Set to track visited nodes
-                traversal = []       # List to maintain traversal order
+                visited = set()  # Keep track of visited nodes
+                traversal = []   # Store DFS traversal order
                 dfs(graph, start, visited, traversal)
                 print("DFS Traversal Order:", traversal)
 
-        # Exit program
+        # ---------------- BFS Traversal ----------------
         elif choice == '4':
-            print("Exiting DFS program...")
+            start = input("Enter starting vertex for BFS: ")
+            if start not in graph:
+                print("Vertex not found in graph.")
+            else:
+                traversal = bfs(graph, start)
+                print("BFS Traversal Order:", traversal)
+
+        # ---------------- Exit ----------------
+        elif choice == '5':
+            print("Exiting program...")
             break
 
+        # Invalid choice
         else:
             print("Invalid choice. Please try again.")
 
-# Execute main function
+# Execute main program
 if __name__ == "__main__":
     main()
 
@@ -78,6 +132,39 @@ if __name__ == "__main__":
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ------------------------- Theory Notes -------------------------
+# 1. Graph: A collection of vertices (nodes) connected by edges.
+# 2. DFS: Depth First Search explores as far as possible along a branch before backtracking.
+# 3. BFS: Breadth First Search explores neighbors level by level.
+# 4. DFS uses recursion (or an explicit stack), BFS uses a queue.
+# 5. Visited set prevents infinite loops in cyclic graphs.
+# 6. Adjacency list: Dictionary where keys are nodes, values are lists of neighbors.
+# 7. Undirected graph: Edges have no direction, meaning connections go both ways.
+# 8. DFS is useful for path finding, topological sorting, and connectivity checking.
+# 9. BFS is useful for shortest path in unweighted graphs, level-order traversal.
+# 10. Traversal: Visiting every node of the graph in a specific order.
 
 # Viva/Oral Questions for DFS & BFS Practical
 
